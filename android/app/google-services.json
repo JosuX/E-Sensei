@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "693322244199",
+    "project_id": "e-sensei-e5351",
+    "storage_bucket": "e-sensei-e5351.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693322244199:android:b1b88b5e6b908aa92534c2",
+        "android_client_info": {
+          "package_name": "com.josu.esensei"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "693322244199-7oaopfgd51vflesl2thacjdq41bhqqo2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe1Pvl9tmQSKPoZQKbQSosw-2HwzoDz6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "693322244199-7oaopfgd51vflesl2thacjdq41bhqqo2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
