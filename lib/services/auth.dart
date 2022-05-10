@@ -31,12 +31,36 @@ class AuthService {
   }
 
   //Sign In with Email and Password
-  Future loginAccount(String email, String password) async {
+  Future<MyUser?> loginAccountMentee(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User user = result.user!;
-      return userfromFirebase(user);
+      MyUser? data = await DatabaseService(uid: user.uid).getUserData();
+      if (data!.isMentor == false) {
+        return data;
+      } else {
+        await signOut();
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<MyUser?> loginAccountMentor(String email, String password) async {
+    try {
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      User user = result.user!;
+      MyUser? data = await DatabaseService(uid: user.uid).getUserData();
+      if (data!.isMentor == true) {
+        return data;
+      } else {
+        await signOut();
+        return null;
+      }
     } catch (e) {
       print(e.toString());
       return null;
@@ -51,16 +75,10 @@ class AuthService {
           email: email, password: password);
       User user = result.user!;
       user.updateDisplayName(fullname);
-      DatabaseService(uid: user.uid)
-          .registerUserData(email, fullname, isMentor == 1 ? true : false);
-      return user != null
-          ? MyUser(
-              uid: user.uid,
-              name: user.displayName,
-              email: user.email,
-              photo_url: user.photoURL,
-              isMentor: isMentor == 1 ? true : false)
-          : null;
+      DatabaseService dbService = DatabaseService(uid: user.uid);
+      dbService.registerUserData(email, fullname, isMentor == 1 ? true : false);
+      MyUser? data = await dbService.getUserData();
+      return user != null ? data : null;
     } catch (e) {
       print(e.toString());
       return null;
