@@ -1,6 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison, unused_element
 
-import 'package:esensei/models/MyUser.dart';
+import 'package:esensei/models/user.dart';
 import 'package:esensei/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -8,20 +8,14 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //Create MyUser Object based on Firebase User
-  MyUser? _userfromFirebase(User? user) {
+  MyUser? userfromFirebase(User? user) {
     return user != null
-        ? MyUser(
-            uid: user.uid,
-            name: user.displayName,
-            email: user.email,
-            photo_url: user.photoURL)
+        ? MyUser(uid: user.uid, name: user.displayName, email: user.email)
         : null;
   }
 
   Stream<MyUser?> get user {
-    return _auth
-        .authStateChanges()
-        .map((User? user) => _userfromFirebase(user));
+    return _auth.authStateChanges().map((User? user) => userfromFirebase(user));
   }
 
   //Sign In Anonymously
@@ -29,7 +23,7 @@ class AuthService {
     try {
       UserCredential result = await _auth.signInAnonymously();
       User user = result.user!;
-      return _userfromFirebase(user);
+      return userfromFirebase(user);
     } catch (e) {
       print(e.toString());
       return null;
@@ -42,7 +36,7 @@ class AuthService {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User user = result.user!;
-      return _userfromFirebase(user);
+      return userfromFirebase(user);
     } catch (e) {
       print(e.toString());
       return null;
@@ -64,6 +58,7 @@ class AuthService {
               uid: user.uid,
               name: user.displayName,
               email: user.email,
+              photo_url: user.photoURL,
               isMentor: isMentor == 1 ? true : false)
           : null;
     } catch (e) {

@@ -164,7 +164,6 @@ class _MentorLoginState extends State<MentorLogin> {
                       if (_formKey.currentState!.validate()) {
                         dynamic result =
                             await _auth.loginAccount(email, password);
-                        print(result);
                         if (result == null) {
                           setState(() => error = "Couldn't sign in.");
                         }

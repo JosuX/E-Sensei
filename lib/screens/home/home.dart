@@ -1,5 +1,10 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'package:esensei/models/user.dart';
 import 'package:esensei/services/auth.dart';
+import 'package:esensei/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
