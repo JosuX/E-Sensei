@@ -177,7 +177,10 @@ class _MenteeLoginState extends State<MenteeLogin> {
                               MyUser? result = await _auth.loginAccountMentee(
                                   email, password);
                               if (result == null) {
-                                setState(() => loading = false);
+                                print("returned null");
+                                if (this.mounted) {
+                                  setState(() => loading = false);
+                                }
                               }
                             }
                           },

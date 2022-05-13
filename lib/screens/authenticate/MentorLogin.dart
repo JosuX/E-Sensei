@@ -177,7 +177,10 @@ class _MentorLoginState extends State<MentorLogin> {
                               MyUser? result = await _auth.loginAccountMentor(
                                   email, password);
                               if (result == null) {
-                                setState(() => loading = false);
+                                print("returned null");
+                                if (this.mounted) {
+                                  setState(() => loading = false);
+                                }
                               }
                             }
                           },

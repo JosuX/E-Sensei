@@ -1,5 +1,6 @@
-// ignore_for_file: unnecessary_null_comparison, unused_element
+// ignore_for_file: unnecessary_null_comparison, unused_element, iterable_contains_unrelated_type, non_constant_identifier_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esensei/models/user.dart';
 import 'package:esensei/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,29 +19,21 @@ class AuthService {
     return _auth.authStateChanges().map((User? user) => userfromFirebase(user));
   }
 
-  //Sign In Anonymously
-  Future loginAno() async {
-    try {
-      UserCredential result = await _auth.signInAnonymously();
-      User user = result.user!;
-      return userfromFirebase(user);
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
-
   //Sign In with Email and Password
   Future<MyUser?> loginAccountMentee(String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      User user = result.user!;
-      MyUser? data = await DatabaseService(uid: user.uid).getUserData();
-      if (data!.isMentor == false) {
+      bool? curr_user_isMentor;
+      QuerySnapshot collSnapshot = await DatabaseService().users.get();
+      var docSnapshot =
+          collSnapshot.docs.where((snapshot) => snapshot.get("email") == email);
+      curr_user_isMentor = docSnapshot.single.get("isMentor");
+      if (curr_user_isMentor == false) {
+        UserCredential result = await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        User user = result.user!;
+        MyUser? data = await DatabaseService(uid: user.uid).getUserData();
         return data;
       } else {
-        await signOut();
         return null;
       }
     } catch (e) {
@@ -51,14 +44,18 @@ class AuthService {
 
   Future<MyUser?> loginAccountMentor(String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      User user = result.user!;
-      MyUser? data = await DatabaseService(uid: user.uid).getUserData();
-      if (data!.isMentor == true) {
+      bool? curr_user_isMentor;
+      QuerySnapshot collSnapshot = await DatabaseService().users.get();
+      var docSnapshot =
+          collSnapshot.docs.where((snapshot) => snapshot.get("email") == email);
+      curr_user_isMentor = docSnapshot.single.get("isMentor");
+      if (curr_user_isMentor == true) {
+        UserCredential result = await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        User user = result.user!;
+        MyUser? data = await DatabaseService(uid: user.uid).getUserData();
         return data;
       } else {
-        await signOut();
         return null;
       }
     } catch (e) {

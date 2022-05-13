@@ -5,7 +5,7 @@ import 'package:esensei/models/user.dart';
 
 class DatabaseService {
   final String? uid;
-  DatabaseService({required this.uid});
+  DatabaseService({this.uid});
   // collection reference
   final CollectionReference users =
       FirebaseFirestore.instance.collection("users");
