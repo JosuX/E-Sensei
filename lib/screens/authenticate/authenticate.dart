@@ -43,37 +43,31 @@ class _AuthenticateState extends State<Authenticate> {
         {
           return FrontPage(toggleView: toggleView);
         }
-        break;
 
       case 2:
         {
           return RolePage(toggleView: toggleView, setRole: setRole);
         }
-        break;
 
       case 3:
         {
           return MentorLogin(toggleView: toggleView);
         }
-        break;
 
       case 4:
         {
           return MenteeLogin(toggleView: toggleView);
         }
-        break;
 
       case 5:
         {
           return CreateAccount(toggleView: toggleView, getRole: getRole);
         }
-        break;
 
       default:
         {
           return FrontPage(toggleView: toggleView);
         }
-        break;
     }
   }
 }

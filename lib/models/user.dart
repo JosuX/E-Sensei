@@ -9,7 +9,6 @@ class MyUser {
   final String? photo_url;
   final bool? isMentor;
   final List<String>? bookmarks;
-  final List<String>? subjects;
 
   MyUser(
       {this.uid,
@@ -17,8 +16,7 @@ class MyUser {
       this.name,
       this.photo_url,
       this.isMentor,
-      this.bookmarks,
-      this.subjects});
+      this.bookmarks});
 
   MyUser.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -28,8 +26,7 @@ class MyUser {
         email = snapshot.data()?["email"],
         photo_url = snapshot.data()?["photo"],
         isMentor = snapshot.data()?["isMentor"],
-        bookmarks = snapshot.data()?["bookmarks"],
-        subjects = snapshot.data()?["subjects"];
+        bookmarks = snapshot.data()?["bookmarks"];
 
   Map<String, dynamic> toFirestore() {
     return {
@@ -38,7 +35,6 @@ class MyUser {
       if (photo_url != null) "photo": photo_url,
       if (isMentor != null) "isMentor": isMentor,
       if (bookmarks != null) "bookmarks": bookmarks,
-      if (subjects != null) "subjects": subjects
     };
   }
 }

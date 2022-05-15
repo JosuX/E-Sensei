@@ -1,6 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esensei/models/user.dart';
+import 'package:esensei/screens/home/dashboard/dashboard.dart';
 import 'package:esensei/services/auth.dart';
 import 'package:esensei/services/database.dart';
 import 'package:flutter/material.dart';
@@ -14,20 +16,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final AuthService _auth = AuthService();
+  var pagelist = {"Dashboard": 1, "SubjectFeed": 2};
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SingleChildScrollView(
-      child: Container(
-        child: ElevatedButton(
-          onPressed: () async {
-            await _auth.signOut();
-          },
-          child: Text("Sign Out"),
-        ),
-        margin: EdgeInsets.only(top: 200),
-      ),
-    ));
+    return Dashboard();
   }
 }

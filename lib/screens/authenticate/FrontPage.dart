@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, sized_box_for_whitespace, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, sized_box_for_whitespace, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class FrontPage extends StatefulWidget {
   final Function toggleView;
@@ -14,28 +15,29 @@ class FrontPage extends StatefulWidget {
 class _FrontPageState extends State<FrontPage> {
   @override
   Widget build(BuildContext context) {
-    double Wrefix = (MediaQuery.of(context).size.width) / 360;
-    double Hrefix = (MediaQuery.of(context).size.height) / 800;
     return Scaffold(
         body: Stack(children: [
       Container(
         color: Color(0xffC42340),
-        height: 115 * Hrefix,
+        height: 12.88.h,
       ),
       Container(
-        width: 360 * Wrefix,
+        width: 100.w,
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 63 * Hrefix),
+              padding: EdgeInsets.only(top: 7.875.h),
             ),
             Container(
-              child: Image.asset("assets/logo.png"),
-              width: 113 * Wrefix,
-              height: 111 * Hrefix,
+              child: Image.asset(
+                "assets/logo.png",
+                fit: BoxFit.contain,
+              ),
+              width: 31.39.w,
+              height: 13.88.h,
             ),
             Padding(
-              padding: EdgeInsets.only(top: 20 * Hrefix),
+              padding: EdgeInsets.only(top: 2.5.h),
             ),
             AutoSizeText(
               "Welcome to",
@@ -43,15 +45,18 @@ class _FrontPageState extends State<FrontPage> {
               style: TextStyle(fontFamily: "Roboto-Medium"),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 14 * Hrefix),
+              padding: EdgeInsets.only(top: 1.75.h),
             ),
             Container(
-              child: Image.asset("assets/Welcome.png"),
-              width: 318 * Wrefix,
-              height: 208 * Hrefix,
+              child: Image.asset(
+                "assets/Welcome.png",
+                fit: BoxFit.contain,
+              ),
+              width: 88.33.w,
+              height: 26.h,
             ),
             Padding(
-              padding: EdgeInsets.only(top: 14 * Hrefix),
+              padding: EdgeInsets.only(top: 1.75.h),
             ),
             AutoSizeText(
               "E-Sensei!",
@@ -59,11 +64,11 @@ class _FrontPageState extends State<FrontPage> {
               style: TextStyle(fontFamily: "Roboto-Medium"),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 26 * Hrefix),
+              padding: EdgeInsets.only(top: 3.25.h),
             ),
             Container(
-              width: 206 * Wrefix,
-              height: 43 * Hrefix,
+              width: 57.22.w,
+              height: 5.38.h,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(15))),
               child: ElevatedButton(
@@ -82,12 +87,12 @@ class _FrontPageState extends State<FrontPage> {
             )
           ],
         ),
-        margin: EdgeInsets.only(top: 81 * Hrefix),
+        margin: EdgeInsets.only(top: 10.125.h),
         decoration: BoxDecoration(
           color: Color(0xffEDEDED),
           borderRadius: BorderRadius.all(Radius.circular(25)),
         ),
-        height: 730 * Hrefix,
+        height: 91.25.h,
       ),
     ]));
   }
