@@ -16,7 +16,11 @@ class Wrapper extends StatelessWidget {
     if (curr_user == null) {
       return Authenticate();
     } else {
-      return Home();
+      return StreamProvider<CurrentUser?>.value(
+          value: DatabaseService(uid: Provider.of<MyUser?>(context)?.uid)
+              .currentUserSnapshot,
+          initialData: null,
+          child: Home());
     }
   }
 }

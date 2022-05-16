@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: file_names, prefer_const_literals_to_create_immutables, prefer_const_constructors, use_key_in_widget_constructors, non_constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esensei/services/auth.dart';
@@ -11,11 +11,13 @@ import 'package:sizer/sizer.dart';
 
 class NavBar extends StatelessWidget {
   final AuthService _auth = AuthService();
+  final String? user_name;
+  final String? user_email;
+
+  NavBar({this.user_name, this.user_email});
+
   @override
   Widget build(BuildContext context) {
-    CurrentUser? curr_user_snapshot = Provider.of<CurrentUser?>(context);
-    String? curr_user_name = curr_user_snapshot?.user.name;
-    String? curr_user_email = curr_user_snapshot?.user.email;
     return Drawer(
       child: Container(
         color: Color(0xffE3555E),
@@ -23,8 +25,8 @@ class NavBar extends StatelessWidget {
           children: [
             UserAccountsDrawerHeader(
                 decoration: BoxDecoration(),
-                accountName: Text(curr_user_name!),
-                accountEmail: Text(curr_user_email!),
+                accountName: Text(user_name!),
+                accountEmail: Text(user_email!),
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Color(0xffE3555E),
                   child: (ClipOval(
@@ -83,16 +85,6 @@ class NavBar extends StatelessWidget {
                     Divider(
                       height: 1,
                       thickness: 3,
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.account_circle,
-                        color: Colors.white,
-                      ),
-                      title: Text(
-                        'Users',
-                        style: TextStyle(color: Colors.white),
-                      ),
                     ),
                     ListTile(
                       leading: Icon(

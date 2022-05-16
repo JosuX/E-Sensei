@@ -25,17 +25,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          StreamProvider<CurrentUser?>.value(
-              value:
-                  DatabaseService(uid: FirebaseAuth.instance.currentUser?.uid)
-                      .currentUserSnapshot,
-              initialData: null),
-          StreamProvider<MyUser?>.value(
-              value: AuthService().user, initialData: null)
-        ],
-        child: Sizer(
-            builder: (context, orientation, deviceType) => MaterialApp(
-                debugShowCheckedModeBanner: false, home: Wrapper())));
+      providers: [
+        StreamProvider<MyUser?>.value(
+            value: AuthService().user, initialData: null)
+      ],
+      child: Sizer(
+          builder: (context, orientation, deviceType) =>
+              MaterialApp(debugShowCheckedModeBanner: false, home: Wrapper())),
+    );
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, use_key_in_widget_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esensei/models/subject.dart';
@@ -9,7 +9,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutterfire_ui/firestore.dart';
 
 class SubjectListView extends StatefulWidget {
-  SubjectListView({Key? key}) : super(key: key);
+  final Function toggleView;
+
+  SubjectListView({required this.toggleView});
 
   @override
   State<SubjectListView> createState() => _SubjectListViewState();
@@ -31,8 +33,8 @@ class _SubjectListViewState extends State<SubjectListView> {
         itemBuilder: (context, snapshot) {
           final subject = snapshot.data();
           return SubjectCard(
-            subj_name: subject.subj_name,
-            color: subject.color,
+            subject: subject,
+            toggleView: widget.toggleView,
           );
         },
         loadingBuilder: (context) =>
