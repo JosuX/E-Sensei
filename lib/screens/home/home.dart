@@ -1,11 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:esensei/models/subject.dart';
-import 'package:esensei/models/user.dart';
 import 'package:esensei/screens/home/dashboard/cards/SubjectFeed.dart';
 import 'package:esensei/shared/loading.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:esensei/screens/home/dashboard/dashboard.dart';
 import 'package:esensei/services/database.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +13,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  //Dashboard Settings
+  bool isGrid = false;
+
   var pagelist = {"Dashboard": 1, "SubjectFeed": 2};
   int curr_page = 1;
   var selected_subject;
@@ -44,7 +43,9 @@ class _HomeState extends State<Home> {
 
         default:
           {
-            return Dashboard(toggleView: toggleView);
+            return Dashboard(
+              toggleView: toggleView,
+            );
           }
       }
     } else {

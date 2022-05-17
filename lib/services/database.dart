@@ -1,7 +1,6 @@
 // ignore_for_file: dead_code, non_constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:esensei/models/subject.dart';
 import 'package:esensei/models/user.dart';
 
 class DatabaseService {

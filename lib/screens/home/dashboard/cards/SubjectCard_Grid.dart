@@ -1,20 +1,20 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_new, sized_box_for_whitespace
+// ignore_for_file: prefer_const_constructors, unnecessary_new, sized_box_for_whitespace, prefer_const_constructors_in_immutables, use_key_in_widget_constructors, camel_case_types
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:esensei/models/subject.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class SubjectCard extends StatefulWidget {
+class SubjectCard_Grid extends StatefulWidget {
   final Subject subject;
   final Function toggleView;
 
-  SubjectCard({required this.toggleView, required this.subject});
+  SubjectCard_Grid({required this.toggleView, required this.subject});
 
   @override
-  State<SubjectCard> createState() => _SubjectCardState();
+  State<SubjectCard_Grid> createState() => _SubjectCard_GridState();
 }
 
-class _SubjectCardState extends State<SubjectCard> {
+class _SubjectCard_GridState extends State<SubjectCard_Grid> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -24,19 +24,20 @@ class _SubjectCardState extends State<SubjectCard> {
       child: Column(
         children: [
           Container(
-            width: 94.16.w,
-            height: 11.625.h,
+            width: 43.61.w,
+            height: 13.63.h,
             decoration: BoxDecoration(
                 color: hexToColor(widget.subject.color!),
-                borderRadius: BorderRadius.circular(15)),
+                borderRadius: BorderRadius.circular(10)),
             child: Column(children: [
               Padding(
-                padding: EdgeInsets.only(top: 2.193.h),
+                padding: EdgeInsets.only(top: 2.75.h),
               ),
               Container(
-                height: 3.51.h,
+                height: 4.h,
                 child: AutoSizeText(
                   widget.subject.subj_name!,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: "Inter-Medium", color: Colors.white),
                   maxLines: 1,
@@ -44,17 +45,17 @@ class _SubjectCardState extends State<SubjectCard> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 0.86.h),
+                padding: EdgeInsets.only(top: 1.61.h),
               ),
               Divider(
-                indent: 2.77.w,
-                endIndent: 2.5.w,
+                indent: 2.5.w,
+                endIndent: 1.94.w,
                 height: 1,
                 thickness: 1,
                 color: Colors.black,
               ),
               Padding(
-                padding: EdgeInsets.only(top: 0.44.h),
+                padding: EdgeInsets.only(top: 0.64.h),
               ),
               Align(
                   alignment: Alignment.centerRight,
@@ -68,9 +69,6 @@ class _SubjectCardState extends State<SubjectCard> {
                     height: 3.75.h,
                   ))
             ]),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 1.325.h),
           ),
         ],
       ),

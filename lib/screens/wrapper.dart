@@ -1,4 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names
+
 import 'package:esensei/screens/authenticate/authenticate.dart';
 import 'package:esensei/screens/home/home.dart';
 import 'package:esensei/services/database.dart';

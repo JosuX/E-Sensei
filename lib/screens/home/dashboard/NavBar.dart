@@ -1,12 +1,6 @@
 // ignore_for_file: file_names, prefer_const_literals_to_create_immutables, prefer_const_constructors, use_key_in_widget_constructors, non_constant_identifier_names
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esensei/services/auth.dart';
-import 'package:esensei/services/database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class NavBar extends StatelessWidget {

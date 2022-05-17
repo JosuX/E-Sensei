@@ -44,6 +44,7 @@ dependencies:
   uuid: ^3.0.6
   flutterfire_ui: ^0.4.0+5
   sizer: ^2.0.15
+  flutter_cache_manager: ^3.3.0
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,9 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:esensei/models/subject.dart';
 import 'package:esensei/screens/home/dashboard/cards/Post.dart';
-import 'package:esensei/screens/home/dashboard/cards/SubjectCard.dart';
+import 'package:esensei/screens/home/dashboard/cards/SubjectCard_List.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 

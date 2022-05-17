@@ -1,15 +1,12 @@
-// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, sized_box_for_whitespace, deprecated_member_use, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, sized_box_for_whitespace, deprecated_member_use, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esensei/models/user.dart';
+import 'package:esensei/screens/home/dashboard/EndBar.dart';
+import 'package:esensei/screens/home/dashboard/SubjectGridView.dart';
 import 'package:esensei/screens/home/dashboard/SubjectListView.dart';
-import 'package:esensei/screens/home/dashboard/cards/SubjectCard.dart';
-import 'package:esensei/services/auth.dart';
 import 'package:esensei/services/database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:esensei/screens/home/dashboard/NavBar.dart';
-import 'package:provider/provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -24,17 +21,31 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  bool isGrid = false;
 
   @override
   Widget build(BuildContext context) {
     MyUser? curr_user = Provider.of<CurrentUser?>(context)?.user;
     String? curr_user_name = curr_user?.name;
     String? curr_user_email = curr_user?.email;
+    final mentorsQuery = DatabaseService()
+        .users
+        .where("isMentor", isEqualTo: true)
+        .withConverter(
+            fromFirestore: MyUser.fromFirestore,
+            toFirestore: (MyUser user, _) => user.toFirestore());
+    final menteesQuery = DatabaseService()
+        .users
+        .where("isMentor", isEqualTo: false)
+        .withConverter(
+            fromFirestore: MyUser.fromFirestore,
+            toFirestore: (MyUser user, _) => user.toFirestore());
+
     return Scaffold(
         key: _scaffoldKey,
-        endDrawer: NavBar(
-          user_name: curr_user_name,
-          user_email: curr_user_email,
+        endDrawer: EndBar(
+          mentors: mentorsQuery,
+          mentees: menteesQuery,
         ),
         drawer: NavBar(
           user_name: curr_user_name,
@@ -71,7 +82,11 @@ class _DashboardState extends State<Dashboard> {
                   SizedBox(
                     width: 10.w,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          isGrid = !isGrid;
+                        });
+                      },
                       child: Icon(
                         Icons.grid_view_outlined,
                         color: Colors.white,
@@ -96,7 +111,7 @@ class _DashboardState extends State<Dashboard> {
                 Container(
                     margin: EdgeInsets.only(left: 6.66.w),
                     width: 25.27.w,
-                    height: 3.h,
+                    height: 3.3.h,
                     child: AutoSizeText("Subjects",
                         maxLines: 1,
                         style: TextStyle(fontFamily: "Inter-Regular"),
@@ -105,7 +120,15 @@ class _DashboardState extends State<Dashboard> {
               Padding(padding: EdgeInsets.only(top: 1.375.h)),
               Container(
                   margin: EdgeInsets.symmetric(horizontal: 12),
-                  child: SubjectListView(toggleView: widget.toggleView),
+                  child: Builder(
+                    builder: (context) {
+                      if (isGrid == false) {
+                        return SubjectListView(toggleView: widget.toggleView);
+                      } else {
+                        return SubjectGridView(toggleView: widget.toggleView);
+                      }
+                    },
+                  ),
                   height: 81.25.h)
             ]),
             margin: EdgeInsets.only(top: 10.125.h),

@@ -1,8 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, use_key_in_widget_constructors
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esensei/models/subject.dart';
-import 'package:esensei/screens/home/dashboard/cards/SubjectCard.dart';
+import 'package:esensei/screens/home/dashboard/cards/SubjectCard_List.dart';
 import 'package:esensei/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -18,8 +17,8 @@ class SubjectListView extends StatefulWidget {
 }
 
 class _SubjectListViewState extends State<SubjectListView> {
-  final subjects = FirebaseFirestore.instance
-      .collection("subjects")
+  final subjects = DatabaseService()
+      .subjects
       .orderBy("subj_name")
       .withConverter(
           fromFirestore: Subject.fromFirestore,
@@ -32,7 +31,7 @@ class _SubjectListViewState extends State<SubjectListView> {
         query: subjects,
         itemBuilder: (context, snapshot) {
           final subject = snapshot.data();
-          return SubjectCard(
+          return SubjectCard_List(
             subject: subject,
             toggleView: widget.toggleView,
           );
