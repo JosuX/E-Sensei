@@ -9,18 +9,9 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //Create MyUser Object based on Firebase User
-  MyUser? userfromFirebase(User? user) {
-    return user != null
-        ? MyUser(uid: user.uid, name: user.displayName, email: user.email)
-        : null;
-  }
-
-  Stream<MyUser?> get user {
-    return _auth.authStateChanges().map((User? user) => userfromFirebase(user));
-  }
 
   //Sign In with Email and Password
-  Future<MyUser?> loginAccountMentee(String email, String password) async {
+  Future<User?> loginAccountMentee(String email, String password) async {
     try {
       bool? curr_user_isMentor;
       QuerySnapshot collSnapshot = await DatabaseService().users.get();
@@ -31,8 +22,7 @@ class AuthService {
         UserCredential result = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
         User user = result.user!;
-        MyUser? data = await DatabaseService(uid: user.uid).getUserData();
-        return data;
+        return user;
       } else {
         return null;
       }
@@ -42,7 +32,7 @@ class AuthService {
     }
   }
 
-  Future<MyUser?> loginAccountMentor(String email, String password) async {
+  Future<User?> loginAccountMentor(String email, String password) async {
     try {
       bool? curr_user_isMentor;
       QuerySnapshot collSnapshot = await DatabaseService().users.get();
@@ -53,8 +43,7 @@ class AuthService {
         UserCredential result = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
         User user = result.user!;
-        MyUser? data = await DatabaseService(uid: user.uid).getUserData();
-        return data;
+        return user;
       } else {
         return null;
       }

@@ -36,32 +36,8 @@ class DatabaseService {
     }
   }
 
-  MyUser _userDataFromSnapshot(DocumentSnapshot snapshot) {
-    return MyUser(
-      uid: uid,
-      name: snapshot["name"],
-      email: snapshot["email"],
-      photo_url: snapshot["photo"],
-      isMentor: snapshot["isMentor"],
-      bookmarks: snapshot["bookmarks"],
-    );
-  }
-
-  //Get Current User Stream
-  Stream<CurrentUser> get currentUserSnapshot {
-    return users.doc(uid).snapshots().map((event) {
-      return CurrentUser(_userDataFromSnapshot(event));
-    });
-  }
-
   //Get Users Stream
   Stream<QuerySnapshot> get usersSnapshot {
     return users.snapshots();
   }
-}
-
-class CurrentUser {
-  final MyUser user;
-
-  CurrentUser(this.user);
 }

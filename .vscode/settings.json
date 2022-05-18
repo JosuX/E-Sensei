@@ -7,6 +7,7 @@
         "flutterfire",
         "fluttertoast",
         "fullname",
+        "Getx",
         "horiz",
         "Mentee",
         "mentees",
@@ -16,6 +17,7 @@
         "Sensei",
         "Signout",
         "spinkit",
+        "userdata",
         "userfrom"
     ]
 }

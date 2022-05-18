@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:esensei/controllers/users_controller.dart';
 import 'package:esensei/screens/wrapper.dart';
 import 'package:esensei/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -20,14 +22,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        StreamProvider<MyUser?>.value(
-            value: AuthService().user, initialData: null)
-      ],
-      child: Sizer(
-          builder: (context, orientation, deviceType) =>
-              MaterialApp(debugShowCheckedModeBanner: false, home: Wrapper())),
-    );
+    Get.put(UsersController());
+    return Sizer(
+        builder: (context, orientation, deviceType) =>
+            MaterialApp(debugShowCheckedModeBanner: false, home: Wrapper()));
   }
 }

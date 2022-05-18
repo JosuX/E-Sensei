@@ -28,28 +28,23 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    if (Provider.of<CurrentUser?>(context) != null) {
-      switch (curr_page) {
-        case 1:
-          {
-            return Dashboard(toggleView: toggleView);
-          }
+    switch (curr_page) {
+      case 1:
+        {
+          return Dashboard(toggleView: toggleView);
+        }
 
-        case 2:
-          {
-            return SubjectFeed(
-                toggleView: toggleView, subject: selected_subject);
-          }
+      case 2:
+        {
+          return SubjectFeed(toggleView: toggleView, subject: selected_subject);
+        }
 
-        default:
-          {
-            return Dashboard(
-              toggleView: toggleView,
-            );
-          }
-      }
-    } else {
-      return Loading();
+      default:
+        {
+          return Dashboard(
+            toggleView: toggleView,
+          );
+        }
     }
   }
 }

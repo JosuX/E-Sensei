@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:esensei/models/user.dart';
 import 'package:esensei/services/auth.dart';
 import 'package:esensei/shared/loading.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -180,7 +181,7 @@ class _MenteeLoginState extends State<MenteeLogin> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 setState(() => loading = true);
-                                MyUser? result = await _auth.loginAccountMentee(
+                                User? result = await _auth.loginAccountMentee(
                                     email, password);
                                 if (result == null) {
                                   if (mounted) {
