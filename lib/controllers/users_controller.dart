@@ -1,16 +1,31 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:esensei/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:esensei/models/user.dart';
 
 class UsersController extends GetxController {
-  final CollectionReference users =
-      FirebaseFirestore.instance.collection("users");
+  static DatabaseService dbService = DatabaseService();
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  final mentorsQuery = dbService.users
+      .where("email", isNotEqualTo: _auth.currentUser?.email)
+      .where("isMentor", whereIn: [true])
+      .withConverter(
+          fromFirestore: MyUser.fromFirestore,
+          toFirestore: (MyUser user, _) => user.toFirestore())
+      .obs;
+
+  final menteesQuery = dbService.users
+      .where("email", isNotEqualTo: _auth.currentUser?.email)
+      .where("isMentor", whereIn: [false])
+      .withConverter(
+          fromFirestore: MyUser.fromFirestore,
+          toFirestore: (MyUser user, _) => user.toFirestore())
+      .obs;
   Rx<MyUser> currentUser = MyUser().obs;
 
   Future<MyUser> currentUserFromSnapshot(User? user) async {
     if (user != null) {
-      var userdata = await users.doc(user.uid).snapshots().first;
+      var userdata = await dbService.users.doc(user.uid).snapshots().first;
       MyUser curr_AppUser = MyUser(
           uid: user.uid,
           email: userdata.get("email"),
@@ -26,7 +41,7 @@ class UsersController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    currentUser.bindStream(FirebaseAuth.instance
+    currentUser.bindStream(_auth
         .userChanges()
         .asyncMap((User? user) => currentUserFromSnapshot(user)));
   }

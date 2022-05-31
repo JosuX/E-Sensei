@@ -1,11 +1,8 @@
 // ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables
 
 import 'package:esensei/screens/home/dashboard/cards/SubjectFeed.dart';
-import 'package:esensei/shared/loading.dart';
 import 'package:esensei/screens/home/dashboard/dashboard.dart';
-import 'package:esensei/services/database.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override

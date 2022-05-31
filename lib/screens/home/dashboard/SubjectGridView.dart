@@ -2,7 +2,6 @@
 
 import 'package:esensei/models/subject.dart';
 import 'package:esensei/screens/home/dashboard/cards/SubjectCard_Grid.dart';
-import 'package:esensei/screens/home/dashboard/cards/SubjectCard_List.dart';
 import 'package:esensei/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

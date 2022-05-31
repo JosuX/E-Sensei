@@ -2,14 +2,10 @@
 
 import 'package:esensei/controllers/users_controller.dart';
 import 'package:esensei/screens/wrapper.dart';
-import 'package:esensei/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-
-import 'models/user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +21,6 @@ class MyApp extends StatelessWidget {
     Get.put(UsersController());
     return Sizer(
         builder: (context, orientation, deviceType) =>
-            MaterialApp(debugShowCheckedModeBanner: false, home: Wrapper()));
+            GetMaterialApp(debugShowCheckedModeBanner: false, home: Wrapper()));
   }
 }

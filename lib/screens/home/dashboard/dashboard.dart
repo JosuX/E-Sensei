@@ -1,15 +1,12 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, sized_box_for_whitespace, deprecated_member_use, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:esensei/controllers/users_controller.dart';
-import 'package:esensei/models/user.dart';
 import 'package:esensei/screens/home/dashboard/EndBar.dart';
 import 'package:esensei/screens/home/dashboard/SubjectGridView.dart';
 import 'package:esensei/screens/home/dashboard/SubjectListView.dart';
-import 'package:esensei/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:esensei/screens/home/dashboard/NavBar.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class Dashboard extends StatefulWidget {
@@ -27,25 +24,12 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    final mentorsQuery = DatabaseService()
-        .users
-        .where("isMentor", isEqualTo: true)
-        .withConverter(
-            fromFirestore: MyUser.fromFirestore,
-            toFirestore: (MyUser user, _) => user.toFirestore());
-    final menteesQuery = DatabaseService()
-        .users
-        .where("isMentor", isEqualTo: false)
-        .withConverter(
-            fromFirestore: MyUser.fromFirestore,
-            toFirestore: (MyUser user, _) => user.toFirestore());
-
     return GetX<UsersController>(builder: (controller) {
       return Scaffold(
           key: _scaffoldKey,
           endDrawer: EndBar(
-            mentors: mentorsQuery,
-            mentees: menteesQuery,
+            mentors: controller.mentorsQuery.value,
+            mentees: controller.menteesQuery.value,
           ),
           drawer: NavBar(
             user_name: controller.currentUser.value.name,
