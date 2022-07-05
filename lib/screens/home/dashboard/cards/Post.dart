@@ -1,10 +1,23 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:esensei/controllers/users_controller.dart';
+import 'package:esensei/models/post_model.dart';
+import 'package:esensei/models/reply_model.dart';
+import 'package:esensei/models/subject.dart';
+import 'package:esensei/screens/home/dashboard/cards/Reply.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterfire_ui/firestore.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:intl/intl.dart';
 
 class Post extends StatefulWidget {
+  final PostModel? model;
+  final Subject? subject;
+
+  Post({required this.model, this.subject});
+
   @override
   State<Post> createState() => _PostState();
 }
@@ -13,6 +26,7 @@ class _PostState extends State<Post> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 1.75.h),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(3))),
@@ -23,59 +37,75 @@ class _PostState extends State<Post> {
             children: [
               Row(
                 children: [
-                  Padding(padding: EdgeInsets.only(left: 83.765.w)),
+                  Padding(padding: EdgeInsets.only(left: 83.675.w)),
                   SizedBox(
                     height: 3.h,
-                    child: PopupMenuButton(
-                        iconSize: 18,
-                        padding: EdgeInsets.all(0),
-                        icon: Icon(Icons.more_horiz),
-                        itemBuilder: (context) => [
-                              PopupMenuItem(
-                                child: Text("Answer"),
-                                value: 1,
-                              ),
-                              PopupMenuItem(
-                                child: Text("Delete"),
-                                value: 2,
-                              ),
-                              PopupMenuItem(
-                                child: Text("Bookmark"),
-                                value: 3,
-                              )
-                            ]),
+                    child: GetX<UsersController>(builder: (controller) {
+                      if (controller.currentUser.value.name ==
+                              widget.model?.author &&
+                          controller.currentUser.value.isMentor == true) {
+                        return PopupMenuButton(
+                            iconSize: 18,
+                            padding: EdgeInsets.all(0),
+                            icon: Icon(Icons.more_horiz),
+                            itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                    child: Text("Answer"),
+                                    value: 1,
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text("Delete"),
+                                    value: 2,
+                                    onTap: () async {
+                                      await widget.subject?.posts
+                                          ?.doc(widget.model?.id)
+                                          .delete();
+                                    },
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text("Bookmark"),
+                                    value: 3,
+                                  )
+                                ]);
+                      }
+                      return Container();
+                    }),
                   ),
                 ],
               ),
               Container(
-                color: Colors.blue,
                 width: 90.56.w,
                 child: AutoSizeText(
-                  "Grab your reader’s attention with a great quote from the document or use this space to emphasize a key point. To place this text box anywhere on the page, just drag it.",
+                  widget.model!.content,
                   minFontSize: 12,
                   textAlign: TextAlign.justify,
                   style: TextStyle(fontFamily: "Inter-Regular"),
                 ),
               ),
-              Row(children: [
-                AutoSizeText(
-                  "By: ",
-                  minFontSize: 11,
-                  style: TextStyle(fontFamily: "Inter-Regular"),
-                ),
-                Image.asset("assets/UserC.png"),
-                AutoSizeText(
-                  "Example user name",
-                  minFontSize: 11,
-                  style: TextStyle(fontFamily: "Inter-Regular"),
-                ),
-                Padding(padding: EdgeInsets.only(left: 30.w)),
-                AutoSizeText(
-                  "2 hours ago",
-                  minFontSize: 12,
-                  style: TextStyle(fontFamily: "Inter-Regular"),
-                ),
-              ]),
+              SizedBox(
+                width: 90.56.w,
+                height: 24,
+                child: Row(children: [
+                  AutoSizeText(
+                    "By: ",
+                    minFontSize: 11,
+                    style: TextStyle(fontFamily: "Inter-Regular"),
+                  ),
+                  Image.asset("assets/UserC.png"),
+                  AutoSizeText(
+                    widget.model!.author,
+                    minFontSize: 11,
+                    style: TextStyle(fontFamily: "Inter-Regular"),
+                  ),
+                  Spacer(flex: 1),
+                  AutoSizeText(
+                    DateFormat("yyyy-MM-dd")
+                        .format(widget.model!.date.toDate()),
+                    minFontSize: 12,
+                    style: TextStyle(fontFamily: "Inter-Regular"),
+                  ),
+                ]),
+              ),
               Padding(padding: EdgeInsets.only(top: 3.62.w)),
               Row(
                 children: [
@@ -105,6 +135,21 @@ class _PostState extends State<Post> {
                 height: 1,
               ),
               Padding(padding: EdgeInsets.only(top: 1.h)),
+              SizedBox(
+                width: 95.43.w,
+                child: FirestoreListView<ReplyModel>(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.all(0),
+                    query: widget.model!.replies.orderBy("id").withConverter(
+                        fromFirestore: ReplyModel.fromFirestore,
+                        toFirestore: (ReplyModel model, _) =>
+                            model.toFirestore()),
+                    itemBuilder: (context, snapshot) {
+                      return Reply(
+                        model: snapshot.data(),
+                      );
+                    }),
+              ),
             ],
           )
         ],
