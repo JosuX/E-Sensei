@@ -79,6 +79,7 @@ flutter:
     - assets/Menu.png
     - assets/User_fill.png
     - assets/UserC.png
+    - assets/Send_fill.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

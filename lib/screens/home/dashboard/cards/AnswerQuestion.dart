@@ -1,34 +1,35 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:esensei/controllers/users_controller.dart';
 import 'package:esensei/models/post_model.dart';
 import 'package:esensei/models/subject.dart';
-import 'package:esensei/screens/home/dashboard/cards/Post.dart';
 import 'package:esensei/screens/home/dashboard/cards/SubjectCard_List.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterfire_ui/firestore.dart';
-import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:uuid/uuid.dart';
 
-class SubjectFeed extends StatefulWidget {
+class AnswerQuestion extends StatefulWidget {
   final Function toggleView;
   final Subject? subject;
-  SubjectFeed({
+  final PostModel? post;
+  AnswerQuestion({
     required this.toggleView,
     required this.subject,
+    required this.post,
   });
 
   @override
-  State<SubjectFeed> createState() => _SubjectFeedState();
+  State<AnswerQuestion> createState() => _SubjectFeedState();
 }
 
-class _SubjectFeedState extends State<SubjectFeed> {
+class _SubjectFeedState extends State<AnswerQuestion> {
+  String question = "";
+  var uuid = Uuid();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
-          widget.toggleView("Dashboard", null);
+          widget.toggleView("SubjectFeed", widget.subject);
           return Future.value(false);
         },
         child: Scaffold(
@@ -55,7 +56,8 @@ class _SubjectFeedState extends State<SubjectFeed> {
                             alignment: Alignment.centerLeft,
                             child: IconButton(
                               onPressed: () {
-                                widget.toggleView("Dashboard", null);
+                                widget.toggleView(
+                                    "SubjectFeed", widget.subject, null);
                               },
                               icon: Icon(Icons.arrow_back),
                               iconSize: 3.5.h,
@@ -82,70 +84,31 @@ class _SubjectFeedState extends State<SubjectFeed> {
                           )
                         ],
                       ),
+                      Padding(padding: EdgeInsets.only(top: 5.38.h)),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
                           padding: EdgeInsets.only(left: 3.88.w),
-                          width: 33.06.w,
+                          width: 43.06.w,
                           height: 2.38.h,
                           child: AutoSizeText(
-                            "Questions List:",
+                            "Answering Question...",
                             maxLines: 1,
                             style: TextStyle(fontFamily: "Inter-Regular"),
                             minFontSize: 15,
                           ),
                         ),
                       ),
-                      Padding(padding: EdgeInsets.only(top: 1.38.h)),
-                      GetX<UsersController>(
-                          builder: (controller) => controller
-                                  .currentUser.value.isMentor!
-                              ? Container()
-                              : Row(
-                                  children: [
-                                    Padding(
-                                        padding: EdgeInsets.only(left: 2.5.w)),
-                                    Container(
-                                      width: 35.83.w,
-                                      height: 4.5.h,
-                                      child: Row(
-                                        children: [
-                                          TextButton(
-                                            onPressed: () {
-                                              widget.toggleView("AddQuestion",
-                                                  widget.subject, null);
-                                            },
-                                            child: Text("Add Questions"),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                        padding:
-                                            EdgeInsets.only(left: 61.66.w)),
-                                  ],
-                                ))
                     ],
                   ),
                 ),
                 Container(
                     color: Color(0xffC4C4C4),
-                    padding: EdgeInsets.all(1.375.h),
-                    height: 81.h,
-                    child: FirestoreListView<PostModel>(
-                        query: widget.subject!.posts!
-                            .orderBy("id")
-                            .withConverter(
-                                fromFirestore: PostModel.fromFirestore,
-                                toFirestore: (PostModel model, _) =>
-                                    model.toFirestore()),
-                        itemBuilder: (context, snapshot) {
-                          return Post(
-                            model: snapshot.data(),
-                            subject: widget.subject,
-                            toggleView: widget.toggleView,
-                          );
-                        })),
+                    width: 100.w,
+                    height: 76.h,
+                    child: Column(
+                      children: [Container(height: 50, color: Colors.white)],
+                    )),
               ],
             ),
           ),

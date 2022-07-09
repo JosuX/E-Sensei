@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esensei/controllers/users_controller.dart';
 import 'package:esensei/models/post_model.dart';
 import 'package:esensei/models/reply_model.dart';
@@ -11,18 +12,21 @@ import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class Post extends StatefulWidget {
   final PostModel? model;
   final Subject? subject;
+  final Function toggleView;
 
-  Post({required this.model, this.subject});
+  Post({required this.model, required this.subject, required this.toggleView});
 
   @override
   State<Post> createState() => _PostState();
 }
 
 class _PostState extends State<Post> {
+  String reply = "";
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,8 +46,7 @@ class _PostState extends State<Post> {
                     height: 3.h,
                     child: GetX<UsersController>(builder: (controller) {
                       if (controller.currentUser.value.name ==
-                              widget.model?.author &&
-                          controller.currentUser.value.isMentor == true) {
+                          widget.model?.author) {
                         return PopupMenuButton(
                             iconSize: 18,
                             padding: EdgeInsets.all(0),
@@ -52,6 +55,8 @@ class _PostState extends State<Post> {
                                   PopupMenuItem(
                                     child: Text("Answer"),
                                     value: 1,
+                                    onTap: () {
+                                    },
                                   ),
                                   PopupMenuItem(
                                     child: Text("Delete"),
@@ -114,17 +119,40 @@ class _PostState extends State<Post> {
                   Padding(padding: EdgeInsets.only(left: 0.83.w)),
                   Container(
                       width: 80.w,
-                      height: 2.88.h,
+                      color: Color(0xffE0DDDB),
                       child: TextField(
-                          decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Color(0xffE0DDDB),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  borderSide:
-                                      BorderSide(color: Color(0xffE0DDDB)))))),
+                        scrollPadding: EdgeInsets.all(0),
+                        minLines: 1,
+                        style: TextStyle(
+                            fontSize: 13, fontFamily: "Inter-Regular"),
+                        onChanged: ((value) => reply = value),
+                        keyboardType: TextInputType.multiline,
+                      )),
                   Padding(padding: EdgeInsets.only(left: 1.39.w)),
-                  Image.asset("assets/UserC.png"),
+                  GetX<UsersController>(builder: (controller) {
+                    var currentUser = controller.currentUser.value.name;
+                    return InkWell(
+                      onTap: () async {
+                        var uid = Uuid().v1();
+                        await widget.model?.replies.doc(uid).set({
+                          'author': currentUser,
+                          'content': reply,
+                          'date': Timestamp.fromDate(DateTime.now()),
+                          'id': uid,
+                          'stars': 0
+                        });
+                        FocusScope.of(context).unfocus();
+                        setState(() {});
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              border: Border.all(color: Colors.black, width: 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          child: Image.asset("assets/Send_fill.png")),
+                    );
+                  }),
                   Padding(padding: EdgeInsets.only(left: 0.036.w)),
                 ],
               ),
@@ -147,6 +175,7 @@ class _PostState extends State<Post> {
                     itemBuilder: (context, snapshot) {
                       return Reply(
                         model: snapshot.data(),
+                        postModel: widget.model,
                       );
                     }),
               ),
