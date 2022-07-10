@@ -19,7 +19,7 @@ class _SubjectCard_ListState extends State<SubjectCard_List> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        widget.toggleView("SubjectFeed", widget.subject, null);
+        widget.toggleView("SubjectFeed", subject: widget.subject);
       },
       child: Column(
         children: [

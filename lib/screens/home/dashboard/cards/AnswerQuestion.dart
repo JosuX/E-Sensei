@@ -29,7 +29,7 @@ class _SubjectFeedState extends State<AnswerQuestion> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
-          widget.toggleView("SubjectFeed", widget.subject);
+          widget.toggleView("SubjectFeed", subject: widget.subject);
           return Future.value(false);
         },
         child: Scaffold(
@@ -56,8 +56,8 @@ class _SubjectFeedState extends State<AnswerQuestion> {
                             alignment: Alignment.centerLeft,
                             child: IconButton(
                               onPressed: () {
-                                widget.toggleView(
-                                    "SubjectFeed", widget.subject, null);
+                                widget.toggleView("SubjectFeed",
+                                    subject: widget.subject);
                               },
                               icon: Icon(Icons.arrow_back),
                               iconSize: 3.5.h,

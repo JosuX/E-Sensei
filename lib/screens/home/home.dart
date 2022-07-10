@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
   int curr_page = 1;
   var selected_subject;
   var selected_post;
-  void toggleView(String page, var subject, var post) {
+  void toggleView(String page, {var subject, var post}) {
     setState(() {
       selected_subject = subject;
       selected_post = post;
